@@ -24,3 +24,5 @@ router.delete('/items/:id', (req, res) => {
     .then(() => res.sendStatus(200))
     .catch(e => console.error(e))
 })
+
+module.exports = router

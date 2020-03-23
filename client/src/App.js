@@ -22,6 +22,7 @@ const App = () => {
   }
 
   const handleCreateItem = event => {
+    console.log(event)
     event.preventDefault()
     Item.create({
       text: itemState.text,
@@ -66,7 +67,7 @@ const App = () => {
   return (
     <div>
 
-      <Form>
+      <form>
         <FormGroup>
           <Label htmlFor="text">item</Label>
           <Input
@@ -78,7 +79,7 @@ const App = () => {
         <FormGroup>
         <Button color="primary" onClick={handleCreateItem}>Add Item</Button>
         </FormGroup>
-      </Form>
+      </form>
       <ListGroup>
         {
           itemState.items.map(({ _id, text, isDone }) => (

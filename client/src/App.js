@@ -68,17 +68,17 @@ const App = () => {
     <div>
 
       <form>
-        <FormGroup>
+        <p>
           <Label htmlFor="text">item</Label>
           <Input
             type="text"
             name="text"
             value={itemState.text}
             onChange={handleInputChange} />
-        </FormGroup>
-        <FormGroup>
-        <Button color="primary" onClick={handleCreateItem}>Add Item</Button>
-        </FormGroup>
+        </p>
+        <p>
+          <Button color="primary" onClick={handleCreateItem}>Add Item</Button>
+        </p>
       </form>
       <ListGroup>
         {

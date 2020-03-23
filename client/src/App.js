@@ -1,11 +1,38 @@
 import React, { useState, useEffect } from 'react'
+import {
+  ListGroup,
+  ListGroupItem,
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input
+} from 'reactstrap'
 import Item from './utils/Item'
 
 const App = () => {
 
   const [itemState, setItemState] = useState({
-    items: []
+    items: [],
+    text: ''
   })
+
+  const handleInputChange = ({ target }) => {
+    setItemState({ ...itemState, [target.name]: target.value })
+  }
+
+  const handleCreateItem = event => {
+    event.preventDefault()
+    Item.create({
+      text: itemState.text,
+      isDone: false
+    })
+      .then(({ data: item }) => {
+        let items = JSON.parse(JSON.stringify(itemState.items))
+        items.push(item)
+        setItemState({ ...itemState, items, text: '' })
+      })
+  }
 
   const handleToggleComplete = (id, isDone) => {
     Item.update(id, { isDone: !isDone })
@@ -16,7 +43,7 @@ const App = () => {
             item.isDone = !isDone
           }
         })
-        setItemState({ items })
+        setItemState({ ...itemState, items })
       })
   }
 
@@ -25,31 +52,44 @@ const App = () => {
       .then(() => {
         let items = JSON.parse(JSON.stringify(itemState.items))
         items = items.filter(item => item._id !== id)
-        setItemState({ items })
+        setItemState({ ...itemState, items })
       })
   }
 
   useEffect(() => {
     Item.read()
       .then(({ data: items }) => {
-        setItemState({ items })
+        setItemState({ ...itemState, items })
       })
   }, [])
 
   return (
     <div>
-      <h1>Hello World!</h1>
-      <ul>
+
+      <Form>
+        <FormGroup>
+          <Label htmlFor="text">item</Label>
+          <Input
+            type="text"
+            name="text"
+            value={itemState.text}
+            onChange={handleInputChange} />
+        </FormGroup>
+        <FormGroup>
+        <Button color="primary" onClick={handleCreateItem}>Add Item</Button>
+        </FormGroup>
+      </Form>
+      <ListGroup>
         {
           itemState.items.map(({ _id, text, isDone }) => (
-            <li key={_id}>
+            <ListGroupItem key={_id}>
               {text}
-              <button onClick={() => handleToggleComplete(_id, isDone)}>{isDone ? 'complete' : 'incomplete'}</button>
-              <button onClick={() => handleDeleteItem(_id)}>delete</button>
-            </li>
+              <Button color={isDone ? 'success' : 'warning'} onClick={() => handleToggleComplete(_id, isDone)}>{isDone ? 'complete' : 'incomplete'}</Button>
+              <Button color="danger" onClick={() => handleDeleteItem(_id)}>delete</Button>
+            </ListGroupItem>
           ))
         }
-      </ul>
+      </ListGroup>
     </div>
   )
 }

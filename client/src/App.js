@@ -1,13 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import {
-  ListGroup,
-  ListGroupItem,
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input
-} from 'reactstrap'
 import Item from './utils/Item'
 
 const App = () => {
@@ -69,28 +60,28 @@ const App = () => {
 
       <form>
         <p>
-          <Label htmlFor="text">item</Label>
-          <Input
+          <label htmlFor="text">item</label>
+          <input
             type="text"
             name="text"
             value={itemState.text}
             onChange={handleInputChange} />
         </p>
         <p>
-          <Button color="primary" onClick={handleCreateItem}>Add Item</Button>
+          <button color="primary" onClick={handleCreateItem}>Add Item</button>
         </p>
       </form>
-      <ListGroup>
+      <ul>
         {
           itemState.items.map(({ _id, text, isDone }) => (
-            <ListGroupItem key={_id}>
+            <li key={_id}>
               {text}
-              <Button color={isDone ? 'success' : 'warning'} onClick={() => handleToggleComplete(_id, isDone)}>{isDone ? 'complete' : 'incomplete'}</Button>
-              <Button color="danger" onClick={() => handleDeleteItem(_id)}>delete</Button>
-            </ListGroupItem>
+              <button color={isDone ? 'success' : 'warning'} onClick={() => handleToggleComplete(_id, isDone)}>{isDone ? 'complete' : 'incomplete'}</button>
+              <button color="danger" onClick={() => handleDeleteItem(_id)}>delete</button>
+            </li>
           ))
         }
-      </ListGroup>
+      </ul>
     </div>
   )
 }
